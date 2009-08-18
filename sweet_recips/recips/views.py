@@ -1,7 +1,8 @@
 from django.shortcuts import render
 import re
+from collections import OrderedDict
 
-from .models import Recip, Ingredient, Quantity
+from .models import Recip, Ingredient
 
 # Create your views here.
 def index(request):
@@ -14,25 +15,29 @@ def index(request):
         ingredients_from_user = [ingredient for key, ingredient in \
                                  request.POST.items() if key != 'csrfmiddlewaretoken']
 
-        #liste of recip found with liste ingredients from user
-        recips = []
+        #liste of recip object found with liste ingredients missing
+        recips = {}
+
         for ingredient in ingredients_from_user:
-            recips_found = Recip.objects.filter(ingredients__name=ingredient)
-            recips += recips_found
+            #found recips with ingredients from user
+            recips_found = Recip.objects.filter(ingredients__icontains=ingredient)
 
-        #constitute number repition of a ingredients in recips liste
-        recips_miss_ingredients = {}
-        for recip in recips:
-            if recip not in recips_miss_ingredients.keys():
-                #Ingredian list missing in recips
-                ingredients_miss = [ingredient.name for ingredient in recip.get_ingredients \
-                                    if ingredient.name not in ingredients_from_user]
-                recips_miss_ingredients[recip] = ingredients_miss
+            for recip in recips_found:
+                if recip not in recips.keys():
+                    recips[recip] = recip.get_ingredients
 
-                print(recips_miss_ingredients)
+                regex = '^.*{}[ a-z]?.*'.format(ingredient)
+
+                for recip_ingredient in recips[recip]:
+                    if re.match(regex, recip_ingredient, flags=re.IGNORECASE):
+                        recips[recip].remove(recip_ingredient)
+                    print(recip_ingredient)
+
+        #dict recip sorted
+        recips_sorted = OrderedDict(sorted(recips.items(), key=lambda x: len(x[1]), reverse=False))
 
         context = {
-            'recips_miss_ingredients': recips_miss_ingredients,
+            'recips': recips_sorted,
         }
 
     return render(request, 'recips/index.html', context)

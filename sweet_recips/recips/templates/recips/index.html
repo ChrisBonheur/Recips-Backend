@@ -6,15 +6,28 @@
   </head>
   <body>
     <h1>Bienvenue dans l'univers des belles recettes</h1>
-    <p>{{ recips }} </p>
 
     <div class="">
-        {% for recip, ingredients_miss in recips_miss_ingredients.items %}
-            <p>{{ recip }}</p>
-            <p>ingredients manquants</p>
-            {% for ingredient in ingredients_miss %}
-              <li>{{ ingredient }}</li>
+        {% for recip, ingredients_missing in recips.items %}
+          <div style="background: pink">
+            <p>{{ recip.name }}</p>
+            <p>ingredients :</p>
+            {% for ingredient in recip.get_ingredients %}
+            <li>{{ ingredient }}</li>
             {% endfor %}
+          </div>
+          <div>
+            <h2>Liste des {{ ingredients_missing|length }} ingredients manquant pour cette recette</h2>
+            <ol>
+              {% for ingredient in ingredients_missing %}
+                <li>{{ ingredient }}</li>
+              {% empty %}
+                <p>Tout est au complet comme ingredient pour cette recette</p>
+              {% endfor %}
+            </ol>
+          </div>
+        {% empty %}
+          <p>Aucune recette disponible</p>
         {% endfor %}
     </div>
     <h2>Entrez vos ingredients disponible ici</h2>
@@ -29,6 +42,10 @@
       <p>
         <input type="submit" name="" value="Trouver recettes dispo">
       </p>
+
+      <div>
+
+      </div>
     </form>
 
     <script type="text/javascript">

@@ -8,22 +8,21 @@ class Ingredient(models.Model):
     photo = models.ImageField(null=True)
 
     class Meta:
-        verbose_name = "Ingredien"
+        verbose_name = "Ingredient"
 
     def __str__(self):
         return self.name
 
 
 class Recip(models.Model):
-    name = models.CharField(max_length=100, verbose_name="Nom de la recette")
-    indication = models.TextField(verbose_name="Description de la recette")
+    name = models.CharField(max_length=100, verbose_name="Nom de la recette", unique=True)
+    persons_number = models.IntegerField(null=True)
+    preparation = models.TextField(verbose_name="Description de la recette")
     photo = models.ImageField(null=True)
     persons = models.IntegerField(verbose_name="Nombre de personne", null=True)
     date = models.DateField(auto_now=True, verbose_name="Date d'ajout")
-    ingredients = models.ManyToManyField(Ingredient, related_name="recettes")
-    ingredient_quantity = models.ManyToManyField(Ingredient,through='Quantity',
-                                    related_name="+",
-                                    verbose_name="Ingredient avc quantité")
+    ingredients = models.TextField(null=True)
+
     class Meta:
         verbose_name = "Recette"
 
@@ -32,18 +31,17 @@ class Recip(models.Model):
 
     @property
     def get_ingredients(self):
-        ingredients = Ingredient.objects.filter(recettes__id=self.id)
+        ingredients = self.ingredients
+        ingredients = ingredients.split(",")
         return ingredients
 
-
-class Quantity(models.Model):
-    quantity = models.FloatField(verbose_name="Quantité")
-    designation = models.CharField(max_length=10, null=True)#after, remove the nullable
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT)
-    recip = models.ForeignKey(Recip, on_delete=models.PROTECT)
-
-    def __str__(self):
-        return str(self.quantity)
-
-    class Meta:
-        verbose_name = "Quantité"
+    # def ingredients_missing(self, *ingredients_from_user):
+    #     missing = []
+    #     for ingredient in ingredients_from_user:
+    #         #regex to verify if ingredient from user is in line of ingredient in sys
+    #         regex = '^.+[{}].+'.format(ingredient)
+    #         #for each entry in ingredients recip, verify if ingredient from use is in.
+    #         if not re.match(regex, [ingredient_system for ingredient_system in self.get_ingredients]):
+    #             missing.append(ingredient)
+    #
+    #     return missing
