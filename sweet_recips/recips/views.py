@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import re
 from collections import OrderedDict
 
@@ -36,8 +37,24 @@ def index(request):
         #dict recip sorted
         recips_sorted = OrderedDict(sorted(recips.items(), key=lambda x: len(x[1]), reverse=False))
 
+        #CREATE PAGINATOR
+        list_recips = [] #init list for create paginator
+        for recip in recips.keys():
+            list_recips.append(recip)
+        #instance paginator
+        paginator = Paginator(list_recips, 5)
+        default_page = 2
+        page = request.GET.get('page')
+        try:
+            list_recips_pagined = paginator.page(page)
+        except PageNotAnInteger:
+            list_recips_pagined = paginator.page(default_page)
+        except EmptyPage:
+            list_recips_pagined = paginator.page(default_page)
+
         context = {
             'recips': recips_sorted,
+            'recips_pagined': list_recips_pagined,
         }
 
     return render(request, 'recips/index.html', context)

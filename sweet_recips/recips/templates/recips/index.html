@@ -8,7 +8,7 @@
     <h1>Bienvenue dans l'univers des belles recettes</h1>
 
     <div class="">
-        {% for recip, ingredients_missing in recips.items %}
+        {% for recip in recips_pagined %}
           <div style="background: pink">
             <p>{{ recip.name }}</p>
             <p>ingredients :</p>
@@ -29,6 +29,15 @@
         {% empty %}
           <p>Aucune recette disponible</p>
         {% endfor %}
+
+        {% if recips_pagined.has_previous %}
+        <li class="page-item "><a class="page-link" href="?page={{ recips_pagined.previous_page_number }}">Préc</a></li>
+        {% endif %}
+
+        {% if recips_pagined.has_next %}
+        <li class="page-item "><a class="page-link" href="?page={{ recips_pagined.next_page_number }}">Suivant</a></li>
+        {% endif %}
+
     </div>
     <h2>Entrez vos ingredients disponible ici</h2>
     <form class="" action="{% url 'home' %}" method="post">
