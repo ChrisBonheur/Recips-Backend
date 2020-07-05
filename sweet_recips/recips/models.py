@@ -1,5 +1,6 @@
 from django.db import models
 
+import re
 # Create your models here.
 
 class Ingredient(models.Model):
@@ -15,6 +16,8 @@ class Ingredient(models.Model):
 
 
 class Recip(models.Model):
+    LIST_INGREDIENTS_FROM_USER = []
+
     name = models.CharField(max_length=100, verbose_name="Nom de la recette", unique=True)
     persons_number = models.IntegerField(null=True)
     preparation = models.TextField(verbose_name="Description de la recette")
@@ -35,13 +38,23 @@ class Recip(models.Model):
         ingredients = ingredients.split(",")
         return ingredients
 
-    # def ingredients_missing(self, *ingredients_from_user):
-    #     missing = []
-    #     for ingredient in ingredients_from_user:
-    #         #regex to verify if ingredient from user is in line of ingredient in sys
-    #         regex = '^.+[{}].+'.format(ingredient)
-    #         #for each entry in ingredients recip, verify if ingredient from use is in.
-    #         if not re.match(regex, [ingredient_system for ingredient_system in self.get_ingredients]):
-    #             missing.append(ingredient)
-    #
-    #     return missing
+    @classmethod
+    def set_list_ingredients_from_user(cls, *list_ingredients):
+        """Settings a liste ingredients from user"""
+        cls.LIST_INGREDIENTS_FROM_USER = list_ingredients
+
+    @property
+    def get_missing_ingredient(self):
+        """This function return a missing ingredients list to cook this recip
+        before to use it, make sure to set a list ingredients with
+        set_list_ingredients_from_user"""
+        for ingredient in self.LIST_INGREDIENTS_FROM_USER:
+            #init ingredient liste from database
+            ingredients_system = self.get_ingredients
+            regex = regex = '^.*{}[ a-z]?.*'.format(ingredient)
+
+            for ingredient_system in ingredients_system:
+                if re.match(regex, ingredient_system, flags=re.IGNORECASE):
+                    ingredients_system.remove(ingredient_system)
+
+        return ingredients_system

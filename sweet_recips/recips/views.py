@@ -14,30 +14,19 @@ def index(request):
         #get all ingredients from method.POST dict without csrfmiddlewaretoken
         ingredients_from_user = [ingredient for key, ingredient in \
                                  request.POST.items() if key != 'csrfmiddlewaretoken']
-
-        #liste of recip object found with liste ingredients missing
-        recips = {}
+        #init method class to set ingredient list from user
+        Recip.set_list_ingredients_from_user(ingredients_from_user)
+        #init list of recip object found by ingredient from user
+        recips = []
 
         for ingredient in ingredients_from_user:
             #found recips with ingredients from user
             recips_found = Recip.objects.filter(ingredients__icontains=ingredient)
-
             for recip in recips_found:
-                if recip not in recips.keys():
-                    recips[recip] = recip.get_ingredients
-
-                regex = '^.*{}[ a-z]?.*'.format(ingredient)
-
-                for recip_ingredient in recips[recip]:
-                    if re.match(regex, recip_ingredient, flags=re.IGNORECASE):
-                        recips[recip].remove(recip_ingredient)
-                    print(recip_ingredient)
-
-        #dict recip sorted
-        recips_sorted = OrderedDict(sorted(recips.items(), key=lambda x: len(x[1]), reverse=False))
-
+                if recip not in recips:
+                    recips.append(recip)
         context = {
-            'recips': recips_sorted,
+            'recips': recips,
         }
 
     return render(request, 'recips/index.html', context)

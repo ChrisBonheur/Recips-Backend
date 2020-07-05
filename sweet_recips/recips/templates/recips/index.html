@@ -8,7 +8,7 @@
     <h1>Bienvenue dans l'univers des belles recettes</h1>
 
     <div class="">
-        {% for recip, ingredients_missing in recips.items %}
+        {% for recip in recips %}
           <div style="background: pink">
             <p>{{ recip.name }}</p>
             <p>ingredients :</p>
@@ -17,9 +17,9 @@
             {% endfor %}
           </div>
           <div>
-            <h2>Liste des {{ ingredients_missing|length }} ingredients manquant pour cette recette</h2>
+            <h2>Liste des {{ recip.get_missing_ingredient|length }} ingredients manquant pour cette recette</h2>
             <ol>
-              {% for ingredient in ingredients_missing %}
+              {% for ingredient in recip.get_missing_ingredient %}
                 <li>{{ ingredient }}</li>
               {% empty %}
                 <p>Tout est au complet comme ingredient pour cette recette</p>
