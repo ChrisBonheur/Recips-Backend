@@ -4,7 +4,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url('^(?P<page>)$', views.index, name="home"),
+    url('^$', views.index, name="home"),
 ]
 
 
