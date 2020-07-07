@@ -1,10 +1,10 @@
-from django.urls import path
-from django.conf.urls import url
+from django.urls import path, re_path
 
 from . import views
 
 urlpatterns = [
-    url('^$', views.index, name="home"),
+    re_path('^$', views.index, name="home"),
+    re_path('^result/$', views.result, name="result"),
 ]
 
 

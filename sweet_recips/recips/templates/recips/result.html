@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Resultat de recherche</title>
+  </head>
+  <body>
+    <h1>Résultat de votre recherche</h1>
+    <div class="">
+        {% for recip in recips %}
+          <div style="background: pink">
+            <p>{{ recip.name }}</p>
+            <p>ingredients :</p>
+            {% for ingredient in recip.get_ingredients %}
+            <li>{{ ingredient }}</li>
+            {% endfor %}
+          </div>
+          <div>
+            <h2>Liste des {{ recip.get_missing_ingredient|length }} ingredients manquant pour cette recette</h2>
+            <ol>
+              {% for ingredient in recip.get_missing_ingredient %}
+                <li>{{ ingredient }}</li>
+              {% empty %}
+                <p>Tout est au complet comme ingredient pour cette recette</p>
+              {% endfor %}
+            </ol>
+          </div>
+        {% empty %}
+          <p>Aucune recette disponible</p>
+        {% endfor %}
+    </div>
+  </body>
+</html>

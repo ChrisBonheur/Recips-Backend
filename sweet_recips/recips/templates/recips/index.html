@@ -7,31 +7,8 @@
   <body>
     <h1>Bienvenue dans l'univers des belles recettes</h1>
 
-    <div class="">
-        {% for recip in recips %}
-          <div style="background: pink">
-            <p>{{ recip.name }}</p>
-            <p>ingredients :</p>
-            {% for ingredient in recip.get_ingredients %}
-            <li>{{ ingredient }}</li>
-            {% endfor %}
-          </div>
-          <div>
-            <h2>Liste des {{ recip.get_missing_ingredient|length }} ingredients manquant pour cette recette</h2>
-            <ol>
-              {% for ingredient in recip.get_missing_ingredient %}
-                <li>{{ ingredient }}</li>
-              {% empty %}
-                <p>Tout est au complet comme ingredient pour cette recette</p>
-              {% endfor %}
-            </ol>
-          </div>
-        {% empty %}
-          <p>Aucune recette disponible</p>
-        {% endfor %}
-    </div>
     <h2>Entrez vos ingredients disponible ici</h2>
-    <form class="" action="{% url 'home' %}" method="post">
+    <form class="" action="{% url 'recips:result' %}" method="post">
       {% csrf_token %}
       <div id="liste_ingredients">
         <input type="text" name="ingredient1" class="ingredients"><br>
@@ -43,9 +20,6 @@
         <input type="submit" name="" value="Trouver recettes dispo">
       </p>
 
-      <div>
-
-      </div>
     </form>
 
     <script type="text/javascript">
