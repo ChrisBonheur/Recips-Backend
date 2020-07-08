@@ -15,6 +15,12 @@
             <li>{{ ingredient }}</li>
             {% endfor %}
           </div>
+          <div style="background: gray">
+            <h1>PREPARARTION</h1>
+            <div>
+              {{ recip.preparation }}
+            </div>
+          </div>
           <div>
             <h2>Liste des {{ recip.get_missing_ingredient|length }} ingredients manquant pour cette recette</h2>
             <ol>

@@ -28,6 +28,19 @@ def result(request):
                 if recip not in recipes:
                     recipes.append(recip)
 
+        #Order a list result recips by number of ingredients found in
+        recipes_length = len(recipes)
+        for i in range(recipes_length):
+            for j in range(recipes_length):
+                #lenght of a values() in dict
+                values_length_i = recipes[i].get_missing_ingredient
+                values_length_i = len(values_length_i)
+                values_length_j = recipes[j].get_missing_ingredient
+                values_length_j = len(values_length_j)
+
+                if values_length_i <= values_length_j and i <= recipes_length:
+                    recipes[i], recipes[j] = recipes[j], recipes[i]
+
         context = {
             'recipes': recipes,
         }
