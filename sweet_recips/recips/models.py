@@ -14,9 +14,12 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.name
 
-# class category(models.Model):
-#     name = models.CharField(max_length=100, unique=True)
-#     photo = models.ImageField(null=True)
+class Category(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    photo = models.URLField(null=True)
+
+    class Meta:
+        verbose_name = "Categorie"
 
 
 class Recip(models.Model):
@@ -25,10 +28,12 @@ class Recip(models.Model):
     name = models.CharField(max_length=100, verbose_name="Nom de la recette", unique=True)
     persons_number = models.IntegerField(null=True)
     preparation = models.TextField(verbose_name="Description de la recette")
-    photo = models.ImageField(null=True)
+    photo = models.URLField(null=True)
     persons = models.IntegerField(verbose_name="Nombre de personne", null=True)
     date = models.DateField(auto_now=True, verbose_name="Date d'ajout")
     ingredients = models.TextField(null=True)
+    category = models.ForeignKey(Category, verbose_name="Categorie", on_delete=models.SET_NULL,
+                                 null=True)
 
     class Meta:
         verbose_name = "Recette"
