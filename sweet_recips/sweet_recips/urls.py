@@ -21,7 +21,7 @@ from django.conf import settings
 from recips import views, urls
 
 urlpatterns = [
-    re_path('^$', views.index),
+    re_path('^$', views.Home.as_view(), name="home"),
     re_path('^recips/', include(urls)),
     path('admin/', admin.site.urls),
 ]

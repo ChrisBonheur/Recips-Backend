@@ -14,6 +14,10 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.name
 
+# class category(models.Model):
+#     name = models.CharField(max_length=100, unique=True)
+#     photo = models.ImageField(null=True)
+
 
 class Recip(models.Model):
     LIST_INGREDIENTS_FROM_USER = []

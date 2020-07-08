@@ -20,6 +20,14 @@
         <input type="submit" name="" value="Trouver recettes dispo">
       </p>
 
+      <div>
+        <h2>Recettes</h2>
+        <ul>
+          {%for recipe in Recipes %}
+            <li>{{ recipe.name }}</li>
+          {% endfor %}
+        </ul>
+      </div>
     </form>
 
     <script type="text/javascript">

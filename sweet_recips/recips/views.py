@@ -1,14 +1,15 @@
 from django.shortcuts import render, redirect
+from django.views.generic import ListView
 import re
 from collections import OrderedDict
 
 from .models import Recip, Ingredient
 
-# Create your views here.
-def index(request):
-
-    return render(request, 'recips/index.html', {})
-
+class Home(ListView):
+    model = Recip
+    context_object_name = "Recipes"
+    template_name = "recips/index.html"
+    paginate_by = 5
 
 def result(request):
     if request.method == "POST":
@@ -29,7 +30,7 @@ def result(request):
                     recipes.append(recip)
 
         context = {
-            'recips': recipes,
+            'recipes': recipes,
         }
     else:
         return redirect('recips:home')
