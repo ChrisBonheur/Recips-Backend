@@ -1,4 +1,6 @@
-# import json
+# from recips.models import Ingredient
+from django.core.files import File
+import json
 # import re
 # import time
 
@@ -28,3 +30,18 @@
 #         time.sleep(1)
 #     else:
 #         print('LA RECETTE "{}" EXISTE DÉJÀ: NON AJOUTÉ'.format(recip['name'].upper()))
+
+ingredients_list = []
+
+# ingredient = Ingredient(name="Ail")
+# ingredient.photo = File.open('https://suisse-nutritionniste.ch/fr/wp-content/uploads/sites/3/2019/10/xail-liste-de-legumes-de-saison.jpg.pagespeed.ic.nKmjX_3KDR.jpg', 'rb')
+# ingredient.save()
+# with open('ingredients.json') as fp:
+#     ingredients = json.load(fp)
+#     for ingredient_elt in ingredients:
+#         ingredients_list.append(ingredient_elt['ingredient'])
+#
+# for ingredient in ingredients_list:
+#     name = ingredient['name'].strip()
+#     url_img = ingredient['img_link']
+#     print(url_img)

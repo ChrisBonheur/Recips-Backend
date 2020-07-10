@@ -9,6 +9,7 @@ class Home(ListView):
     model = Ingredient
     context_object_name = "ingredients"
     template_name = "recips/index.html"
+    # queryset = Ingredient.objects.get(name="Abats")
 
 def result(request):
     if request.method == "POST":

@@ -6,7 +6,7 @@ import re
 class Ingredient(models.Model):
     name = models.CharField(max_length=100, unique=True,
                             verbose_name="Nom de l'ingredien")
-    photo = models.ImageField(null=True)
+    photo = models.ImageField(upload_to='icon_ingredients/', null=True)
 
     class Meta:
         verbose_name = "Ingredient"

@@ -29,7 +29,22 @@
         </ul>
       </div>
     </form>
+    <p>
+      <script type="text/javascript">
+          const ingredients = []
+      </script>
+      {% for ing in ingredients %}
+        <script type="text/javascript">
+          ingredients.push({
+            "name": "{{ ing.name }}",
+            "url_img": "{{ ing.photo.url }}"
+          });
+        </script>
+      {% endfor %}
+    </p>
+    <di id="test">
 
+    </di>
     <script type="text/javascript">
       let ajout = document.getElementsByTagName('button');
       ajout = ajout[0];
@@ -44,6 +59,17 @@
           divElt.appendChild(input);
           divElt.appendChild(brElt);
       });
+
+      for (const i of ingredients){
+        let p = document.createElement('p');
+        p.textContent = i.name;
+        let img = document.createElement('img');
+        img.setAttribute('src', i.url_img);
+        let div = document.createElement('div');
+        div.appendChild(p)
+        div.appendChild(img)
+        document.getElementById('test').appendChild(div);
+      }
     </script>
   </body>
 </html>
