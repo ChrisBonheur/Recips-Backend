@@ -8,7 +8,8 @@ $(function() {
   $helpText = $('.help-text');
   $submit = $('#submit');
   $inputWidth = $inputValue.width();
-  $divSuggestList.css('width', $inputWidth);//style width
+  console.log($inputWidth);
+  $divSuggestList.width($inputWidth);//style width
   $eltNumber = 0;
   //init ingredients_select by user
   ingredients_select = []
@@ -68,25 +69,26 @@ $(function() {
       buttonCancel.style.borderRadius = '10px';
 
       //creating div to content pElt with button x
-      let divParent = document.createElement('div');
-      divParent.appendChild(pElt);
-      divParent.appendChild(buttonCancel);
-      divParent.style.display = 'flex';
-      divParent.style.justifyContent = 'space-between';
-      divParent.style.alignItems = 'baseline';
-      divParent.style.marginTop = '2px';
+      let div = document.createElement('div');
+      $divParent = $(div);
+      $divParent.append(pElt);
+      $divParent.append(buttonCancel);
+      $divParent.css('display', 'flex');
+      $divParent.css('justifyContent', 'space-between');
+      $divParent.css('alignItems', 'baseline');
+      $divParent.css('marginTop', '2px');
       //find url_image with compare inputValue and each entry in list object ingredient
       for (const ingredient of ingredients){
         if (ingredient.name === inputValue.value){
           url_img = ingredient.url_img;
         }
       }
-      divParent.style.background = `white url(${url_img}) no-repeat center center`;
-      divParent.style.backgroundSize = "contain";
-      divParent.style.borderRadius = "10px";
-      divParent.style.padding = '15px';
+      $divParent.css('background', `white url(${url_img}) no-repeat center center`);
+      $divParent.css('backgroundSize', "contain");
+      $divParent.css('borderRadius', "10px");
+      $divParent.css('padding', '15px');
       //add div parent to divListeIngredient
-      $divListeIngredient.append(divParent);
+      $divListeIngredient.prepend($divParent);
 
       /*create input formulaire hiiden
       to send with post method*/
@@ -128,17 +130,19 @@ $(function() {
     //clear divSuggestList
     $divSuggestList.html('');
     $divSuggestList.css('display', 'none');
+    // limit height divSuggestList
+    $divSuggestList.height('auto');
     /*for each ingredient in ingredients we verifie
     if value input exists in liste*/
-    for (const ingredient of ingredients){
-      if ((ingredient.name.indexOf(e.target.value) === 0) && (e.target.value !== '')){
+    for (let i = 0; i < ingredients.length; i++){
+      if ((ingredients[i].name.indexOf(e.target.value) === 0) && (e.target.value !== '')){
         let ahref = document.createElement('a');
         ahref.href = '#';
         ahref.style.color = "black";
         let pElt = document.createElement('p');
         pElt.setAttribute('id', 'suggest_para');
-        pElt.textContent = ingredient.name;
-        pElt.style.background = `url(${ingredient.url_img}) no-repeat center center`;
+        pElt.textContent = ingredients[i].name;
+        pElt.style.background = `url(${ingredients[i].url_img}) no-repeat center center`;
         pElt.style.backgroundSize = "contain";
         pElt.style.height = "70px";
         pElt.style.paddingTop = "22px";
@@ -160,6 +164,10 @@ $(function() {
           addIngredientInForm()
         });
       }
+    }
+    if ($divSuggestList.height() >= 340){
+        $divSuggestList.height('340');
+        $divSuggestList.css('overflowY', 'hidden');
     }
   });
 
