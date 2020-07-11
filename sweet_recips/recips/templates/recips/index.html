@@ -1,75 +1,37 @@
-<!DOCTYPE html>
-<html lang="fr" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Recips</title>
-  </head>
-  <body>
-    <h1>Bienvenue dans l'univers des belles recettes</h1>
+{% extends 'base.html' %}
 
-    <h2>Entrez vos ingredients disponible ici</h2>
-    <form class="" action="{% url 'recips:result' %}" method="post">
-      {% csrf_token %}
-      <div id="liste_ingredients">
-        <input type="text" name="ingredient1" class="ingredients"><br>
-      </div>
+{% block content %}
+  <div class="container principal">
+    <div class="row">
+        <section class="col-lg-offset-1 col-lg-5 indique">
+            <p class="paragraphe">
+                Trouver des recettes à partir <br>
+                de vos ingredients <br>
+                disponibles ! C'est facile et <br>
+                rapide.
+            </p>
 
-      <button>Ajouter un autre ingredient</button>
+            <div class="form-group form1">
+                <label for="">Indiquez vos ingredients</label>
+                <input type="text" class="form-control" id="inputValue">
+                <div id="suggest-ingredients">
 
-      <p>
-        <input type="submit" name="" value="Trouver recettes dispo">
-      </p>
+                </div>
+                <span id="empty-add"></span><br>
+                <button class="btn add-ingredient">Ajouter</button>
+            </div>
+        </section>
+        <aside class="col-lg-offset-1 col-lg-4">
+            <h2>Liste de vos ingredients</h2>
+            <div class="liste-ingredients">
 
-      <div>
-        <h2>Recettes</h2>
-        <ul>
-          {%for recipe in Recipes %}
-            <li>{{ recipe.name }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-    </form>
-    <p>
-      <script type="text/javascript">
-          const ingredients = []
-      </script>
-      {% for ing in ingredients %}
-        <script type="text/javascript">
-          ingredients.push({
-            "name": "{{ ing.name }}",
-            "url_img": "{{ ing.photo.url }}"
-          });
-        </script>
-      {% endfor %}
-    </p>
-    <di id="test">
-
-    </di>
-    <script type="text/javascript">
-      let ajout = document.getElementsByTagName('button');
-      ajout = ajout[0];
-      let divElt = document.getElementById('liste_ingredients');
-      let i = 1;
-      ajout.addEventListener('click', function(e){
-          e.preventDefault();
-          i++;
-          let brElt = document.createElement('br');
-          let input = document.createElement('input');
-          input.setAttribute("name", `ingredient${i}`);
-          divElt.appendChild(input);
-          divElt.appendChild(brElt);
-      });
-
-      for (const i of ingredients){
-        let p = document.createElement('p');
-        p.textContent = i.name;
-        let img = document.createElement('img');
-        img.setAttribute('src', i.url_img);
-        let div = document.createElement('div');
-        div.appendChild(p)
-        div.appendChild(img)
-        document.getElementById('test').appendChild(div);
-      }
-    </script>
-  </body>
-</html>
+            </div>
+            <form action="{% url 'recips:result' %}" method="post">
+              {% csrf_token %}
+              <span id="empty-submit"></span><br>
+              <button class="btn" type="submit" id="submit">Trouver recettes</button>
+            </form>
+        </aside>
+    </div>
+  </div>
+{% endblock %}

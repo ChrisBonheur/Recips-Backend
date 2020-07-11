@@ -21,7 +21,7 @@ def result(request):
         Recip.set_list_ingredients_from_user(ingredients_from_user)
         #init list of recip object found by ingredient from user
         recipes = []
-
+        print(ingredients_from_user)
         for ingredient in ingredients_from_user:
             #found recips with ingredients from user
             recips_found = Recip.objects.filter(ingredients__icontains=ingredient)

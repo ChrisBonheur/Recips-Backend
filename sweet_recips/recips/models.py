@@ -48,7 +48,7 @@ class Recip(models.Model):
         return ingredients
 
     @classmethod
-    def set_list_ingredients_from_user(cls, *list_ingredients):
+    def set_list_ingredients_from_user(cls, list_ingredients):
         """Settings a liste ingredients from user"""
         cls.LIST_INGREDIENTS_FROM_USER = list_ingredients
 
@@ -57,10 +57,10 @@ class Recip(models.Model):
         """This function return a missing ingredients list to cook this recip
         before to use it, make sure to set a list ingredients with
         set_list_ingredients_from_user"""
+        ingredients_system = self.get_ingredients
         for ingredient in self.LIST_INGREDIENTS_FROM_USER:
             #init ingredient liste from database
-            ingredients_system = self.get_ingredients
-            regex = regex = '^.*{}[ a-z]?.*'.format(ingredient)
+            regex = '^.*{}[ a-z]?.*'.format(ingredient)
 
             for ingredient_system in ingredients_system:
                 if re.match(regex, ingredient_system, flags=re.IGNORECASE):
