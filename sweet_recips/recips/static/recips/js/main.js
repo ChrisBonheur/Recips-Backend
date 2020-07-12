@@ -106,7 +106,7 @@ $(function() {
         //remove input ingredient from list
         ingredients_select.pop(inputValue);
         //remove div content pElt and button x
-        divParent.remove();
+        $divParent.remove();
         //remove too from form, input element
         formElt.removeChild(input);
       });
@@ -122,6 +122,7 @@ $(function() {
   //when focus clear the input Value
   inputValue.addEventListener('focus', () => {
     inputValue.value = '';
+    $divSuggestList.css('display', 'none');
     inputValue.style.background = 'rgba(10, 10,10, 0.8)';
     inputValue.style.color = 'white';
   });

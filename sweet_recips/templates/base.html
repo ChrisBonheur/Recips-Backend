@@ -40,10 +40,13 @@
   </script>
   <script type="text/javascript">
        list_ingredients = []
+       //create a p element to containt text and ignore some caracters html
+       let p = document.createElement('p');
   </script>
   {% for ingredient in ingredients %}
     <script type="text/javascript">
-        list_ingredients.push({name: "{{ ingredient.name }}",
+        $(p).html("{{ ingredient.name }}")
+        list_ingredients.push({name: $(p).text(),
                               url_img: "{{ ingredient.photo.url }}"
                             });
     </script>
