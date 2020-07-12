@@ -1,0 +1,14 @@
+<div>
+  {% load ingredient_extras %}
+  c'est moi !
+
+  <h1>{{ recipe.name }}</h1>
+  <div>
+    {{ recipe.preparation }}
+  </div>
+  <ul>
+   {% for ingredient in recipe.get_ingredients %}
+     <li><img src="{{ ingredient|photo }}" alt=""> {{ ingredient }}</li>
+   {% endfor %}
+  </ul>
+</div>

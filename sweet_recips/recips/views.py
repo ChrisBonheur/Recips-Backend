@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
+from django.db.models import Q
+import operator
+from functools import reduce
 import re
 from collections import OrderedDict
 
@@ -21,13 +24,10 @@ def result(request):
         Recip.set_list_ingredients_from_user(ingredients_from_user)
         #init list of recip object found by ingredient from user
         recipes = []
-        print(ingredients_from_user)
-        for ingredient in ingredients_from_user:
-            #found recips with ingredients from user
-            recips_found = Recip.objects.filter(ingredients__icontains=ingredient)
-            for recip in recips_found:
-                if recip not in recipes:
-                    recipes.append(recip)
+        recips_found = Recip.objects.filter(reduce(operator.or_, \
+            [Q(ingredients__icontains=ingredient) for ingredient in ingredients_from_user]))
+        #add recipes_found in recipes list 
+        recipes += recips_found
 
         #Order a list result recips by number of ingredients found in
         recipes_length = len(recipes)
@@ -49,3 +49,8 @@ def result(request):
         return redirect('recips:home')
 
     return render(request, 'recips/result.html', context)
+
+class Detail(DetailView):
+    context_object_name = 'recipe'
+    model = Recip
+    template_name = 'recips/detail.html'

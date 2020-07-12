@@ -8,18 +8,15 @@
     <h1>Résultat de votre recherche</h1>
     <div class="">
         {% for recip in recipes %}
-          <div style="background: pink">
-            <p>{{ recip.name }}</p>
-            <p>ingredients :</p>
-            {% for ingredient in recip.get_ingredients %}
-            <li>{{ ingredient }}</li>
-            {% endfor %}
-          </div>
           <div style="background: gray">
-            <h1>PREPARARTION</h1>
-            <div>
-              {{ recip.preparation }}
+            <div style="background: pink">
+              <p>{{ recip.name }}</p>
+              <p>ingredients :</p>
+              {% for ingredient in recip.get_ingredients %}
+              <li>{{ ingredient }}</li>
+              {% endfor %}
             </div>
+            <p><a href="{% url 'recips:detail' pk=recip.id %}">Voir la recette</a></p>
           </div>
           <div>
             <h2>Liste des {{ recip.get_missing_ingredient|length }} ingredients manquant pour cette recette</h2>
