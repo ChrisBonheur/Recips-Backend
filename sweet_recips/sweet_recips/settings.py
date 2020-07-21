@@ -65,8 +65,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'sweet_recips.context_processors.get_ingredients_from_user'
             ],
         },
+        
     },
 ]
 
@@ -79,7 +81,7 @@ WSGI_APPLICATION = 'sweet_recips.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'recips',
+        'NAME': 'recipes',
         'USER': 'bonheur',
         'HOST': '',
         'PORT': 5432,

@@ -1,36 +1,85 @@
-<!DOCTYPE html>
-<html lang="fr" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Resultat de recherche</title>
-  </head>
-  <body>
-    <h1>Résultat de votre recherche</h1>
-    <div class="">
-        {% for recip in recipes %}
-          <div style="background: gray">
-            <div style="background: pink">
-              <p>{{ recip.name }}</p>
-              <p>ingredients :</p>
-              {% for ingredient in recip.get_ingredients %}
-              <li>{{ ingredient }}</li>
-              {% endfor %}
+{% extends 'base.html' %}
+{% load ingredient_extras %}
+{% block content %}
+  <div class="container result-page">
+      <div class="child1">
+        {% if normal_recipes_found|length > 0 %}
+            <h2>{{ normal_recipes_found|length }} Recette{{ normal_recipes_found|pluralize }}
+              trouvée{{ recipes|pluralize }}</h2>
+        {% else %}
+            <h2>C'est pas la joie !!!!</h2>
+        {% endif %}
+
+        {% if recipes|length >= 4 %}
+          <form class="" action="result.html" method="post">
+            <select class="" name="categories">
+              <option value="recettes">Recettes</option>
+              <option value="diner">Diner</option>
+              <option value="gouter">Goûter</option>
+              <option value="petit-dejeuner">Petit-déjeuner</option>
+              <option value="tout" selected>Tout</option>
+              <option value="dejeuner">Déjeuner</option>
+            </select>
+
+            <button type="submit" name="button" class="">Trier</button>
+          </form>
+        {% endif %}
+      </div>
+      <div class="row result-recipe">
+        {% for recipe in recipes %}
+            <div class="card col-lg-5 text-center">
+                  <div class="card-body">
+                    <h3 class="card-title">{{ recipe.name }}</h3>
+                    <a href="">
+                      <img src="{{ recipe.photo.url }}" class="card-image-top" alt="image recette" width="100%">
+                    </a>
+                    {% if recipe.get_missing_ingredient|length > 0 %}
+                      <p class="card-text text-left">
+                        Pour cette recette, completez
+                        {{ recipe.get_missing_ingredient|pluralize:"l'ingrédient,les ingrédients" }} ci-dessous :
+                        <strong>Total: {{ recipe.get_missing_ingredient|length }}</strong>
+                      </p>
+                    {% else %}
+                      <p>Parfait ! Tout y est pour réaliser cette recette</p>
+                    {% endif %}
+                    <div class="ing-list">
+                      <ul class="row">
+                        {% for ingredient in recipe.get_missing_ingredient %}
+                            <li class="col-md-6"
+                            style="background: url('{{ ingredient.ingredient.photo.url }}') no-repeat left; background-size: contain;">
+                              {{ ingredient.indication }} {{ ingredient.ingredient }}</li>
+                        {% empty %}
+                            <h3 class="col-md-12 text-center">
+                              Pour cette recette vous avez tout ce qu'il faut
+                            </h3>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                    <a type="button" href="{% url 'recips:detail' pk=recipe.id %}" class="btn show-recipe">Voir la recette</a>
+                 </div>
             </div>
-            <p><a href="{% url 'recips:detail' pk=recip.id %}">Voir la recette</a></p>
-          </div>
-          <div>
-            <h2>Liste des {{ recip.get_missing_ingredient|length }} ingredients manquant pour cette recette</h2>
-            <ol>
-              {% for ingredient in recip.get_missing_ingredient %}
-                <li>{{ ingredient }}</li>
-              {% empty %}
-                <p>Tout est au complet comme ingredient pour cette recette</p>
-              {% endfor %}
-            </ol>
-          </div>
         {% empty %}
-          <p>Aucune recette disponible</p>
+            <div class="col-md-12 empty-ing text-center">
+                <p>
+                  Désolé aucune recette n'est encore disponible pour
+                  {{ ingredients_from_user|pluralize:"l'ingrédient, les ingrédients" }}:
+                </p>
+                {% for ingredient_user in ingredients_from_user %}
+                  <p>{{ ingredient_user }}</p>
+                {% endfor %}
+            </div>
         {% endfor %}
-    </div>
-  </body>
-</html>
+      </div>
+
+      <div class="change-page">
+        {% if recipes.has_previous %}
+          <a class="previous" href="?page={{ recipes.previous_page_nmber }}"></a>
+        {% endif %}
+
+        {% if recipes.has_next %}
+          <a class="next" href="?page={{ recipes.next_page_nmber }}"></a>
+        {% endif %}
+      </div>
+  </div>
+
+{% endblock %}

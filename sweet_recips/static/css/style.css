@@ -81,3 +81,20 @@ li a::selection{
     font-style: italic;
     font-family: "Century Century Schoolbook L";
 }
+a:hover, .btn:hover, a:active{
+  background: rgba(75, 17, 57, 0.97);
+  color: #da80a6;
+}
+h3{
+  color: black
+}
+
+/*footer*/
+footer{
+  background: #da80a6;
+  text-align: center;
+}
+.navbar-brand:hover{
+  background: #da80a6;
+  color: rgba(75, 17, 57, 0.8);
+}

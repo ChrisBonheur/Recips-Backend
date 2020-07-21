@@ -28,11 +28,10 @@
 .form1 input{
   height: 50px;
   font-size: 20px;
-  background: rgba(10, 10,10, 0.8);
+  background: rgba(75, 17, 57, 0.8);
 }
-
 #suggest-ingredients{
-  border: 5px solid #da80a6;
+  border: 1px solid #da80a6;
   text-align: left;
   font-size: 18px;
   padding: 2%;
@@ -58,7 +57,7 @@ aside h2{
   text-align: left;
 }
 .liste-ingredients{
-  background: rgba(10, 10,10, 0.8);
+  background: rgba(75, 17, 57, 0.8);
   height: 377px;
   border-radius: 10px;
   color: black;
@@ -72,4 +71,142 @@ aside .btn{
   margin-top: 17px;
   width: 100%;
   margin-bottom: 60px;
+}
+
+/*RESULT PAGE*//*//////////////////////////////////////////////////////////*/
+.result-page{
+  padding-top: 2%;
+}
+.result-page .child1{
+  margin-left: 3%;
+}
+
+.ing-list ul{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding-left: 0px;
+  border: 5px solid #da80a6;
+  padding: 2%;
+  height: 250px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background: white;
+}
+.ing-list li{
+  background: yellow;
+  padding-left: 15%;
+  height: 75px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  color: black;
+  font-weight: bolder;
+  font-style: italic;
+  font-size: 0.8em;
+}
+
+.card{
+  border: 2px solid #f3cede;
+  margin-bottom: 7%;
+  background: rgba(75, 17, 57, 0.8);
+}
+.result-recipe{
+  color: white;
+  display: flex;
+  justify-content: space-around;
+}
+
+.change-page{
+  display: flex;
+  justify-content: space-around;
+  color: black;
+  height: 130px;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.change-page a{
+  display: inline-block;
+  width: 90px;
+  height: 57px;
+}
+.change-page a:hover{
+  width: 125px;
+  height: 82px;
+}
+.next{
+  background: url('../images/next.png') no-repeat;
+  background-size: contain;
+}
+.next:hover{
+  background: url('../images/next.png') no-repeat;
+  background-size: contain;
+}
+.previous{
+  background: url('../images/previous.png') no-repeat;
+  background-size: contain;
+}
+.previous:hover{
+  background: url('../images/previous.png') no-repeat;
+  background-size: contain;
+}
+.empty-ing{
+  height: 500px;
+  background: rgb(75, 17, 57);
+}
+
+/*Detail-page*/
+.detail-page h1{
+  margin-left: 3%;
+}
+.detail-recip{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.recip-bloc{
+  background: rgba(75, 17, 57, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 2%;
+}
+.card-recip{
+  padding: 2%;
+}
+.img-bloc{
+  height: 300px;
+}
+.ingr-list{
+  background: white;
+  overflow-y: scroll;
+  height: 300px;
+}
+.ingr-list ol{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  height: 100%;
+  padding: 5%;
+}
+.ingr-list li{
+  color: black;
+}
+#img-recip{
+  width: max-content%;
+  height: 360px;
+}
+.direction{
+  text-align: left;
+  word-break: break-all;
+}
+.detail-page{
+  margin-bottom: 50px;
+}
+.ingredients img{
+  width: 50%;
 }
