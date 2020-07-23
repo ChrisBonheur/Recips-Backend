@@ -33,26 +33,15 @@ class Recip(models.Model):
     category = models.ForeignKey(Category, verbose_name="Categorie", on_delete=models.SET_NULL,
                                  null=True)
     ingredients = models.ManyToManyField(Ingredient, related_name='+', through='Quantity')
+    ingredients_length = models.IntegerField(null=True)
 
     class Meta:
         verbose_name = "Recette"
-
-    @classmethod
-    def  get_recipes(self, ingredients_from_user):
-        """This function function get recipes contains ingedients from user"""
-        recipes = []
-        for ingredient in ingredients_from_user:
-            compositions = Quantity.objects.filter(ingredient__name=ingredient)
-            for composition in compositions:
-                if composition.recipe not in recipes:
-                    recipes.append(composition.recipe)      
-        
-        return recipes
     
     @property
     def get_composition(self):
         composition = Quantity.objects.filter(recipe__id=self.id)
-        return composition
+        return Quantity.objects.filter(recipe__id=self.id).order_by("recipe__ingredients_length")
 
     @classmethod
     def set_list_ingredients_from_user(cls, list_ingredients): 

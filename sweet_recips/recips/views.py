@@ -18,44 +18,57 @@ class Home(ListView):
 def result(request):
     if request.method == "POST":
         methode = True
+        test = Recip.objects.all().order_by("ingredients_length")
+        # for t in test:
+            # print(t.ingredients_length)
         #get all ingredients from method.POST dict without csrfmiddlewaretoken
         ingredients_from_user = [ingredient for key, ingredient in \
                                  request.POST.items() if key != 'csrfmiddlewaretoken']
+        
+        #Object q to place all ingredients from user
+        object_q = [Q(ingredient__name=x) for x in ingredients_from_user]
+        #This bloc of code clacul and order recipes by missing ingredients number 
+        #getting of All recipes with ingredients from user
+        q_select = Quantity.objects.filter(reduce(operator.or_, object_q))
+        for object_quantity in q_select:
+            #we set original ingredient length 
+            object_quantity.recipe.ingredients_length = Quantity.objects.filter(\
+                recipe=object_quantity.recipe).count()
+            length = object_quantity.recipe.ingredients_length
+            print(length)
+            #here we verify what ingredient recipe is in ingredients_from user to steal length
+            #of ingredients origin and to know missing ingredient length 
+            for composition in object_quantity.recipe.get_composition:
+                if str(composition.ingredient).strip() in ingredients_from_user:
+                    length -= 1
+            print('miss ', length)
+            #new length after verification 
+            object_quantity.recipe.ingredients_length = length
+            #new save in database get order by missing number ingredients
+            object_quantity.recipe.save()
+        
+        #New query select after new save for ingredients length and getting by order
+        news_select = Quantity.objects.filter(reduce(operator.or_, object_q)).\
+            order_by("recipe__ingredients_length")
         #init method class to set ingredient list from user
         Recip.set_list_ingredients_from_user(ingredients_from_user)
-        #get recipes contains ingredients from user
-        recipes = Recip.get_recipes(ingredients_from_user)
-
-        #Order a list result recips by number of ingredients found in
-        # recipes_length = len(recipes)
-        # for i in range(recipes_length):
-        #     for j in range(recipes_length):
-        #         #lenght of a values() in dict
-        #         values_length_i = recipes[i].get_missing_ingredient
-        #         values_length_i = len(values_length_i)
-        #         values_length_j = recipes[j].get_missing_ingredient
-        #         values_length_j = len(values_length_j)
-
-        #         if values_length_i <= values_length_j and i <= recipes_length:
-        #             recipes[i], recipes[j] = recipes[j], recipes[i]
 
         #Creating for Paginator
-        paginator = Paginator(recipes, 8)
+        paginator = Paginator(news_select, 8)
         page = request.GET.get('page')
         default_page = 1
         try:
             paginator.page(page)
         except PageNotAnInteger as e:
-            recipes_pagined = paginator.page(default_page)
+            news_select = paginator.page(default_page)
         except EmptyPage as e:
-            recipes_pagined = paginator.page(paginator.num_pages)
+            news_select = paginator.page(paginator.num_pages)
         else:
             print(page)
-            recipes_pagined = paginator.page(page)
+            news_select = paginator.page(page)
 
         context = {
-            'recipes': recipes_pagined,
-            'normal_recipes_found': recipes
+            'news_select': news_select,
         }
     else:
         return redirect('recips:home')

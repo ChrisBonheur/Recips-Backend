@@ -3,14 +3,14 @@
 {% block content %}
   <div class="container result-page">
       <div class="child1">
-        {% if normal_recipes_found|length > 0 %}
-            <h2>{{ normal_recipes_found|length }} Recette{{ normal_recipes_found|pluralize }}
+        {% if news_select|length > 0 %}
+            <h2>{{ news_select|length }} Recette{{ normal_recipes_found|pluralize }}
               trouvée{{ recipes|pluralize }}</h2>
         {% else %}
             <h2>C'est pas la joie !!!!</h2>
         {% endif %}
 
-        {% if recipes|length >= 4 %}
+        {% if news_select|length >= 4 %}
           <form class="" action="result.html" method="post">
             <select class="" name="categories">
               <option value="recettes">Recettes</option>
@@ -26,25 +26,25 @@
         {% endif %}
       </div>
       <div class="row result-recipe">
-        {% for recipe in recipes %}
+        {% for select in news_select %}
             <div class="card col-lg-5 text-center">
                   <div class="card-body">
-                    <h3 class="card-title">{{ recipe.name }}</h3>
+                    <h3 class="card-title">{{ select.recipe.name }}</h3>
                     <a href="">
-                      <img src="{{ recipe.photo.url }}" class="card-image-top" alt="image recette" width="100%">
+                      <img src="{{ select.recipe.photo.url }}" class="card-image-top" alt="image recette" width="100%">
                     </a>
-                    {% if recipe.get_missing_ingredient|length > 0 %}
+                    {% if select.recipe.get_missing_ingredient|length > 0 %}
                       <p class="card-text text-left">
                         Pour cette recette, completez
-                        {{ recipe.get_missing_ingredient|pluralize:"l'ingrédient,les ingrédients" }} ci-dessous :
-                        <strong>Total: {{ recipe.get_missing_ingredient|length }}</strong>
+                        {{ select.recipe.get_missing_ingredient|pluralize:"l'ingrédient,les ingrédients" }} ci-dessous :
+                        <strong>Total: {{ select.recipe.get_missing_ingredient|length }}</strong>
                       </p>
                     {% else %}
                       <p>Parfait ! Tout y est pour réaliser cette recette</p>
                     {% endif %}
                     <div class="ing-list">
                       <ul class="row">
-                        {% for ingredient in recipe.get_missing_ingredient %}
+                        {% for ingredient in select.recipe.get_missing_ingredient %}
                             <li class="col-md-6"
                             style="background: url('{{ ingredient.ingredient.photo.url }}') no-repeat left; background-size: contain;">
                               {{ ingredient.indication }} {{ ingredient.ingredient }}</li>
@@ -55,7 +55,7 @@
                         {% endfor %}
                       </ul>
                     </div>
-                    <a type="button" href="{% url 'recips:detail' pk=recipe.id %}" class="btn show-recipe">Voir la recette</a>
+                    <a type="button" href="{% url 'recips:detail' pk=select.recipe.id %}" class="btn show-recipe">Voir la recette</a>
                  </div>
             </div>
         {% empty %}
@@ -72,12 +72,12 @@
       </div>
 
       <div class="change-page">
-        {% if recipes.has_previous %}
-          <a class="previous" href="?page={{ recipes.previous_page_nmber }}"></a>
+        {% if news_select.has_previous %}
+          <a class="previous" href="?page={{ news_select.previous_page_nmber }}"></a>
         {% endif %}
 
-        {% if recipes.has_next %}
-          <a class="next" href="?page={{ recipes.next_page_nmber }}"></a>
+        {% if news_select.has_next %}
+          <a class="next" href="?page={{ news_select.next_page_nmber }}"></a>
         {% endif %}
       </div>
   </div>
