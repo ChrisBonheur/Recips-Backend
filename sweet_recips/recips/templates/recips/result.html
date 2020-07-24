@@ -2,15 +2,16 @@
 {% load ingredient_extras %}
 {% block content %}
   <div class="container result-page">
+    <p>{{ test }}</p>
       <div class="child1">
-        {% if news_select|length > 0 %}
-            <h2>{{ news_select|length }} Recette{{ normal_recipes_found|pluralize }}
-              trouvée{{ recipes|pluralize }}</h2>
+        {% if total_found > 0 %}
+            <h2>{{ total_found }} Recette{{ total_found|pluralize }}
+              trouvée{{ total_found|pluralize }}</h2>
         {% else %}
             <h2>C'est pas la joie !!!!</h2>
         {% endif %}
 
-        {% if news_select|length >= 4 %}
+        {% if recipes|length >= 4 %}
           <form class="" action="result.html" method="post">
             <select class="" name="categories">
               <option value="recettes">Recettes</option>
@@ -26,25 +27,25 @@
         {% endif %}
       </div>
       <div class="row result-recipe">
-        {% for select in news_select %}
+        {% for recipe in recipes %}
             <div class="card col-lg-5 text-center">
                   <div class="card-body">
-                    <h3 class="card-title">{{ select.recipe.name }}</h3>
+                    <h3 class="card-title">{{ recipe.name }}</h3>
                     <a href="">
-                      <img src="{{ select.recipe.photo.url }}" class="card-image-top" alt="image recette" width="100%">
+                      <img src="{{ recipe.photo.url }}" class="card-image-top" alt="image recette" width="100%">
                     </a>
-                    {% if select.recipe.get_missing_ingredient|length > 0 %}
+                    {% if recipe.get_missing_ingredient|length > 0 %}
                       <p class="card-text text-left">
                         Pour cette recette, completez
-                        {{ select.recipe.get_missing_ingredient|pluralize:"l'ingrédient,les ingrédients" }} ci-dessous :
-                        <strong>Total: {{ select.recipe.get_missing_ingredient|length }}</strong>
+                        {{ recipe.get_missing_ingredient|pluralize:"l'ingrédient,les ingrédients" }} ci-dessous :
+                        <strong>Total: {{ recipe.get_missing_ingredient|length }}</strong>
                       </p>
                     {% else %}
                       <p>Parfait ! Tout y est pour réaliser cette recette</p>
                     {% endif %}
                     <div class="ing-list">
                       <ul class="row">
-                        {% for ingredient in select.recipe.get_missing_ingredient %}
+                        {% for ingredient in recipe.get_missing_ingredient %}
                             <li class="col-md-6"
                             style="background: url('{{ ingredient.ingredient.photo.url }}') no-repeat left; background-size: contain;">
                               {{ ingredient.indication }} {{ ingredient.ingredient }}</li>
@@ -55,7 +56,7 @@
                         {% endfor %}
                       </ul>
                     </div>
-                    <a type="button" href="{% url 'recips:detail' pk=select.recipe.id %}" class="btn show-recipe">Voir la recette</a>
+                    <a type="button" href="{% url 'recips:detail' pk=recipe.id %}" class="btn show-recipe">Voir la recette</a>
                  </div>
             </div>
         {% empty %}
@@ -72,14 +73,30 @@
       </div>
 
       <div class="change-page">
-        {% if news_select.has_previous %}
-          <a class="previous" href="?page={{ news_select.previous_page_nmber }}"></a>
-        {% endif %}
+        <div>
+          {% if recipes.has_previous %}
+            <form style="display: block;" action="{% url 'recips:result' recipes.previous_page_number %}" method="post">
+              {% csrf_token %} 
+              {% for ingredient in ingredients_from_user %}
+                  <input type="text" name="{{ ingredient }}" value="{{ ingredient }}" 
+                  style="display: none;">
+              {% endfor %}
+              <button type="submit" class="previous"></button> 
+          {% endif %}
+        </div>
 
-        {% if news_select.has_next %}
-          <a class="next" href="?page={{ news_select.next_page_nmber }}"></a>
-        {% endif %}
+        <div>
+          {% if recipes.has_next %}
+            <form style="display: block;" action="{% url 'recips:result' recipes.next_page_number %}" method="post">
+              {% csrf_token %} 
+              {% for ingredient in ingredients_from_user %}
+                  <input type="text" name="{{ ingredient }}" value="{{ ingredient }}" style="display: none;">
+              {% endfor %}
+              <button type="submit" class="next"></button>
+            </form>
+          {% endif %}
+        </div>
       </div>
   </div>
-
+ 
 {% endblock %}

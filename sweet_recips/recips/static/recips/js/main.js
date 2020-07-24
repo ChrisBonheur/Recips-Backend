@@ -89,7 +89,7 @@ $(function() {
       divParent.css('borderRadius', "10px");
       divParent.css('padding', '15px');
       //add div parent to divListeIngredient
-      divListeIngredient.append(divParent);
+      divListeIngredient.prepend(divParent);
 
       /*create input formulaire hiiden
       to send with post method*/

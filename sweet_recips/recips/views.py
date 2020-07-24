@@ -15,16 +15,13 @@ class Home(ListView):
     template_name = "recips/index.html"
     # queryset = Ingredient.objects.get(name="Abats")
 
-def result(request):
-    if request.method == "POST":
-        methode = True
-        test = Recip.objects.all().order_by("ingredients_length")
-        # for t in test:
-            # print(t.ingredients_length)
-        #get all ingredients from method.POST dict without csrfmiddlewaretoken
-        ingredients_from_user = [ingredient for key, ingredient in \
-                                 request.POST.items() if key != 'csrfmiddlewaretoken']
-        
+def result(request, page=1):
+    methode = True
+    #get all ingredients from method.POST dict without csrfmiddlewaretoken
+    ingredients_from_user = [ingredient for key, ingredient in \
+                                request.POST.items() if key != 'csrfmiddlewaretoken']
+    
+    if len(ingredients_from_user) > 0:
         #Object q to place all ingredients from user
         object_q = [Q(ingredient__name=x) for x in ingredients_from_user]
         #This bloc of code clacul and order recipes by missing ingredients number 
@@ -35,44 +32,44 @@ def result(request):
             object_quantity.recipe.ingredients_length = Quantity.objects.filter(\
                 recipe=object_quantity.recipe).count()
             length = object_quantity.recipe.ingredients_length
-            print(length)
             #here we verify what ingredient recipe is in ingredients_from user to steal length
             #of ingredients origin and to know missing ingredient length 
             for composition in object_quantity.recipe.get_composition:
                 if str(composition.ingredient).strip() in ingredients_from_user:
                     length -= 1
-            print('miss ', length)
-            #new length after verification 
+            #new length after verification
             object_quantity.recipe.ingredients_length = length
             #new save in database get order by missing number ingredients
             object_quantity.recipe.save()
         
         #New query select after new save for ingredients length and getting by order
-        news_select = Quantity.objects.filter(reduce(operator.or_, object_q)).\
-            order_by("recipe__ingredients_length")
+        recipes = []
+        [recipes.append(obj.recipe) for obj in Quantity.objects.filter(reduce(operator.or_, object_q)).\
+            order_by("recipe__ingredients_length") if obj.recipe not in recipes]
+
         #init method class to set ingredient list from user
         Recip.set_list_ingredients_from_user(ingredients_from_user)
 
         #Creating for Paginator
-        paginator = Paginator(news_select, 8)
-        page = request.GET.get('page')
+        paginator = Paginator(recipes, 8)
         default_page = 1
         try:
             paginator.page(page)
         except PageNotAnInteger as e:
-            news_select = paginator.page(default_page)
+            recipes = paginator.page(default_page)
         except EmptyPage as e:
-            news_select = paginator.page(paginator.num_pages)
+            recipes = paginator.page(paginator.num_pages)
         else:
-            print(page)
-            news_select = paginator.page(page)
+            recipes = paginator.page(page)
 
         context = {
-            'news_select': news_select,
+            'recipes': recipes,
+            'total_found': paginator.count,
+            'test': "salut \n Le monde",
         }
     else:
         return redirect('recips:home')
-
+    
     return render(request, 'recips/result.html', context)
 
 class Detail(DetailView):

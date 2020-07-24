@@ -134,23 +134,20 @@ aside .btn{
   width: 90px;
   height: 57px;
 }
-.change-page a:hover{
-  width: 125px;
-  height: 82px;
+.next, .previous{
+  width: 70px;
+  height: 40px;
+  border: none;
+}
+.next:hover, .previous:hover{
+  width: 80px;
+  height: 50px;
 }
 .next{
   background: url('../images/next.png') no-repeat;
   background-size: contain;
 }
-.next:hover{
-  background: url('../images/next.png') no-repeat;
-  background-size: contain;
-}
 .previous{
-  background: url('../images/previous.png') no-repeat;
-  background-size: contain;
-}
-.previous:hover{
   background: url('../images/previous.png') no-repeat;
   background-size: contain;
 }
