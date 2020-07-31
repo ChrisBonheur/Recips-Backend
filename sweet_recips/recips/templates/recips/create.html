@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+
+    <form action="" method="post">
+    {% csrf_token %}
+        <table>
+            <tr>
+                <th>nom de l'ingredient</th>
+                <th>quantité</th>
+                <th>Indication</th>
+            </tr>
+        </table>
+        
+        <button id="btn-add-line">Ajouter</button>
+        <label for="">Préparation</label>
+        <textarea name="" id="" cols="30" rows="10"></textarea>
+    </form>
+</div>
+<script type="text/javascript">
+ pageName = "create-recipe";
+</script>
+{% endblock %}

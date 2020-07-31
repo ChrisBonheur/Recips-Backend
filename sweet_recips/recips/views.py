@@ -76,3 +76,9 @@ class Detail(DetailView):
     context_object_name = 'recipe'
     model = Recip
     template_name = 'recips/detail.html'
+    
+def create(request):
+    context = {
+        'ingredients': Ingredient.objects.all()
+    }
+    return render(request, 'recips/create.html', context)

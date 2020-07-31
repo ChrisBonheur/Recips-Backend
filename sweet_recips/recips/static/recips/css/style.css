@@ -30,7 +30,7 @@
   font-size: 20px;
   background: rgba(75, 17, 57, 0.8);
 }
-#suggest-ingredients{
+.suggest-ingredients{
   border: 1px solid #da80a6;
   text-align: left;
   font-size: 18px;
@@ -39,7 +39,7 @@
   background: white;
   display: none;
 }
-form input{
+.form2 input{
   display: none;
 }
 .form1 .btn{

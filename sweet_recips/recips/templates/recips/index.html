@@ -13,8 +13,8 @@
 
             <div class="form-group form1">
                 <label for="">Indiquez vos ingredients</label>
-                <input type="text" class="form-control" id="inputValue">
-                <div id="suggest-ingredients">
+                <input type="text" class="form-control inputValue">
+                <div class="suggest-ingredients">
 
                 </div>
                 <span id="empty-add"></span><br>
@@ -26,7 +26,7 @@
             <div class="liste-ingredients">
 
             </div>
-            <form action="{% url 'recips:result' %}" method="post">
+            <form action="{% url 'recips:result' %}" method="post" class="form2">
               {% csrf_token %}
               <span id="empty-submit"></span><br>
               <button class="btn" type="submit" id="submit">Trouver recettes</button>
@@ -34,4 +34,7 @@
         </aside>
     </div>
   </div>
+  <script type="text/javascript">
+    pageName = "home";
+  </script>
 {% endblock %}
