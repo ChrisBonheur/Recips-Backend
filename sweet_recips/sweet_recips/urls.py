@@ -20,13 +20,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from recips import views, urls
+# import recips
 
 urlpatterns = [
     re_path('^$', views.Home.as_view(), name="home"),
-    re_path('^recips/', include(urls)),
+    re_path('^recips/', include('recips.urls')),
+    re_path('^users/', include('users.urls')),
     path('admin/', admin.site.urls),
 ]
-
 
 if settings.DEBUG:
     import debug_toolbar
