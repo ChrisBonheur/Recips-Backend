@@ -1,24 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Formulaire d'enregistrement utitlisateurs</h1>
-    {% if email_exist %}
-        <p><strong>Cet email existe déjà</strong> <a href="{% url 'users:connexion' %}">Connectez-vous</a></p>
-    {% elif username_exist %}
-        <p><strong>Nom d'utilisateur déjà utilisé</strong></p>
-    {% endif %}
-    <form action="{% url 'users:create' %}", method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Soumettre">
-    </form>
-    <div>
-        Vous avez déjà un compte, <a href="{% url 'users:connexion' %}">connexion</a>
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container inscription">
+    <div class="row">
+        <div class="col-md-6 bloc text-uppercase text-center">
+            <h1>Inscription</h1>
+            {% if email_exist %}
+                <p><strong>Cet email existe déjà</strong> <a href="{% url 'users:connexion' %}">Connectez-vous</a></p>
+            {% elif username_exist %}
+                <p><strong>Nom d'utilisateur déjà utilisé</strong></p>
+            {% endif %}
+            <form action="{% url 'users:create' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <p>
+                    <input type="submit" value="Soumettre" class="btn sub-btn">
+                </p>
+            </form>
+        </div>
     </div>
-</body>
-</html>
+  </div>
+{% endblock %}

@@ -5,15 +5,34 @@
     {% load static %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{% static 'recips/css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'recips/css/style.css' %}">
+    <link rel="stylesheet" href="{% static '/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'recips/css/style.css' %}">
     <title>Chef Miguel</title>
 </head>
 <body>
 
   <header >
     <div class="container">
+    <div class="container">
+      <div class="row" id="user">
+        {% if user.is_authenticated %}
+          <div class="col-6 col-md-2">
+              <p>{{ user.username }}</p>
+          </div>
+          <div class="col-6 col-md-2">
+              <a href="{% url 'users:deconnexion' %}" class="">Déconnexion</a>
+          </div>
+        {% else %}
+          <div class="col-6 col-md-2">
+            <p href="">Anonyme</p>
+          </div>
+          <div class="col-6 col-md-2">
+              <a href="{% url 'users:connexion' %}" class="">Connexion</a>
+          </div>      
+        {% endif %}
+      </div>
       <h1 class="text-center">CHEF MIGUEL</h1>
       <nav>
           <ul>

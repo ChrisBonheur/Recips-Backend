@@ -43,7 +43,7 @@ def create_user(request):
     
 def connexion(request):
     error = False
-
+    
     if request.method == "POST":
         forms = ConnexionForm(request.POST)
         

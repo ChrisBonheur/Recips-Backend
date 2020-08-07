@@ -1,0 +1,33 @@
+/*inscrption*/
+.inscription{
+    background-color: #cb7375;
+}
+.inscription .row{
+    display: flex;
+    justify-content: center;
+  }
+  .inscription h1{
+    margin-bottom: 6%;
+  }
+  .inscription .bloc{
+    border: 3px solid white;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    padding: 3%;
+  }
+  .inscription form input{
+    width: 70%;
+  }
+  
+  .inscription form p{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .inscription .sub-btn{
+    display: inline;
+    margin: auto;
+    margin-top: 5%;
+    width: auto;
+  }
