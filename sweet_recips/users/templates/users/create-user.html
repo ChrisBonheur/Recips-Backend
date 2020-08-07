@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container inscription">
+    <div class="row">
+        <div class="col-md-6 bloc text-uppercase text-center">
+            <h1>Inscription</h1>
+            {% if email_exist %}
+                <p><strong>Cet email existe déjà</strong> <a href="{% url 'users:connexion' %}">Connectez-vous</a></p>
+            {% elif username_exist %}
+                <p><strong>Nom d'utilisateur déjà utilisé</strong></p>
+            {% endif %}
+            <form action="{% url 'users:create' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <p>
+                    <input type="submit" value="Soumettre" class="btn sub-btn">
+                </p>
+            </form>
+        </div>
+    </div>
+  </div>
+{% endblock %}

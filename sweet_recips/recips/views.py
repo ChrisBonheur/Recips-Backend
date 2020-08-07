@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.core.paginator import Paginator, PageNotAnInteger,EmptyPage
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+
 import operator
 from functools import reduce
 import re
@@ -76,7 +78,8 @@ class Detail(DetailView):
     context_object_name = 'recipe'
     model = Recip
     template_name = 'recips/detail.html'
-    
+
+@login_required 
 def create(request):
     context = {
         'ingredients': Ingredient.objects.all()

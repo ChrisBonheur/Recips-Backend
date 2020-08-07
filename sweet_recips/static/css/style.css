@@ -98,3 +98,19 @@ footer{
   background: #da80a6;
   color: rgba(75, 17, 57, 0.8);
 }
+
+
+#user{
+  /* background-color: gray; */
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  text-align: right;
+}
+#user a, #user p{
+  color: white;
+  font-weight: bolder;
+}
+#user a:hover{
+  color: #da80a6;
+}
